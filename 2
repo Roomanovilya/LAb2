@@ -1,0 +1,34 @@
+#Натуральные числа, содержащие не более одной группы из 3 подряд идущих 7. Список используемых в числах нечетных цифр выводить отдельно прописью
+import re
+d_db = {'1': 'один',  '3': 'три', '5': 'пять', '7': 'семь', '9': 'девять'}
+buffer_len = 1
+work_buffer = ""
+work_buffer_len = buffer_len
+h = 0
+with open("text.txt") as file:
+    buffer = file.read(buffer_len)
+    if not buffer:
+        print("\nФайл text.txt пустой.\nДобавьте непустой файл в директорию или переименуйте существующий файл.")
+    while buffer:
+        while buffer >= '0' and buffer <= '9':
+            work_buffer += buffer
+            buffer = file.read(buffer_len)
+        if len(work_buffer) > 0:
+            buffer= len(re.findall(r"(777){1}", work_buffer))==1
+            if buffer:
+                h = 1
+                odd_digits = '' 
+                for digit in work_buffer: 
+                    if int(digit) % 2 != 0: 
+                        odd_digits += digit
+                print(work_buffer)
+                if odd_digits:
+                    print('Нечетные цифры:', ', '.join([d_db[digit] for digit in odd_digits]))
+                else:
+                    print('Нечетных цифр нет.')
+            work_buffer = ""
+            buffer = file.read(buffer_len)
+        else:
+            buffer = file.read(buffer_len)
+if h == 0:
+    print("В файле отсутствует группа из трёх подряд идущих цифр 7")
